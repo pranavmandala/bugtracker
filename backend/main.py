@@ -7,7 +7,9 @@ from backend.database import engine, Base, get_db
 from backend import models
 from backend.models import Bug
 from backend.schemas import BugCreate
-
+from backend.models import User
+from backend.schemas import UserCreate
+from backend.auth import hash_password
 
 app = FastAPI()
 Base.metadata.create_all(bind = engine)
@@ -80,3 +82,24 @@ def update_bug(
     db.refresh(bug)
     
     return bug
+
+@app.post("api/bugs/register")
+def register_user(
+    user_data : UserCreate,
+    db: Session = Depends(get_db)
+):
+    hashed_password = hash_password(user_data.password)
+
+    user = User(
+        username = user_data.username,
+        hashed_password = hashed_password
+    )
+
+    db.add(user)
+    db.commit()
+    db.refresh()
+
+    return {
+        "id" : user.id,
+        "username" : user.username
+    }

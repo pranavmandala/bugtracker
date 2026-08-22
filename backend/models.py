@@ -13,3 +13,10 @@ class Bug(Base):
     status = Column(String(50), default="open")
     priority = Column(String(50), default="medium")
     created_at = Column(DateTime(timezone=True), server_default=func.now()) 
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(100), unique=True, nullable=False)
+    hashed_password = Column(String(255), nullable=False)

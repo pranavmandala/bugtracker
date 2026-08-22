@@ -4,3 +4,7 @@ class BugCreate(BaseModel):
     title: str
     description: str
     priority : str
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
