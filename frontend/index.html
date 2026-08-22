@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/styles.css">
+        <title>Bug Tracker</title>
+    </head>
+    <body>
+        <header class="header-buttons">
+            <button>Log In</button>
+            <button>Sign Up</button>
+        </header>
+        <p>
+            Bug Tracker
+        </p>
+        <div>
+            <input type="text" id="bug-id-get">
+            <button id="request-button">Get Bug</button>
+        </div>
+        <p>
+
+        </p>
+        <div>
+            <input type="text" id="bug-id-delete">
+            <button id="delete-button">Delete Bug</button>
+        </div>
+        <p>
+
+        </p>
+        <div>
+            <input type="text" id="bug-name">
+            <input type="text" id="bug-description">
+            <select id="priority-select">
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+            </select>
+            <button id="create-button">Create Bug</button>
+        </div>
+        <div>
+            <input type="text" id="big-id-update">
+            <input type="text" id="bug-name-update">
+            <input type="text" id="bug-description-update">
+            <input type="text" id="bug-status-update">
+            <select id="priority-select-update">
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+            </select>
+            <button id="update-button">Update Bug</button>
+        </div>
+        <div id="bug-list">
+
+        </div>
+        <script src="/static/scripts.js"></script>
+    </body>
+</html>
