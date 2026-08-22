@@ -45,6 +45,9 @@ def get_bugs(db: Session = Depends(get_db)):
 def get_bug(bug_id: int, db: Session = Depends(get_db)):
     bug = db.query(Bug).filter(Bug.id == bug_id).first()
 
+    if bug is None:
+        return {"error" : "Bug not found"}
+
     return bug
 
 @app.delete("/api/bugs/{bug_id}")
@@ -83,7 +86,7 @@ def update_bug(
     
     return bug
 
-@app.post("api/bugs/register")
+@app.post("/api/bugs/register")
 def register_user(
     user_data : UserCreate,
     db: Session = Depends(get_db)
@@ -97,7 +100,7 @@ def register_user(
 
     db.add(user)
     db.commit()
-    db.refresh()
+    db.refresh(user)
 
     return {
         "id" : user.id,
