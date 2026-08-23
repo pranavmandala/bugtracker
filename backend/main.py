@@ -5,11 +5,9 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from backend.database import engine, Base, get_db
 from backend import models
-from backend.models import Bug
-from backend.schemas import BugCreate
-from backend.models import User
-from backend.schemas import UserCreate
-from backend.auth import hash_password
+from backend.models import Bug, User
+from backend.schemas import UserCreate, UserLogin, BugCreate
+from backend.auth import hash_password, verify_password
 
 app = FastAPI()
 Base.metadata.create_all(bind = engine)
@@ -104,5 +102,29 @@ def register_user(
 
     return {
         "id" : user.id,
+        "username" : user.username
+    }
+
+@app.post("/api/auth/login")
+def login_user(
+    user_data : UserLogin,
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(
+        User.username == user_data.username
+    ).first()
+
+    if user is None:
+        return {"error" : "Invalid username or password"}
+
+    if not verify_password(
+        user_data.password,
+        user.hashed_password
+    ):
+        return {"error" : "Invalid username or password"}
+
+    return{
+        "message" : "Sucessfully logged in",
+        "user_id" : user.id,
         "username" : user.username
     }
