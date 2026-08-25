@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from sqlalchemy import text
@@ -89,13 +89,18 @@ def register_user(
     user_data : UserCreate,
     db: Session = Depends(get_db)
 ):
-    hashed_password = hash_password(user_data.password)
 
+    existing_user = db.query(User).filter(User.username == user_data.username).first()
+    if existing_user:
+        raise HTTPException(
+            status_code = 409,
+            detail = "Username already exists"
+        )
+
+    hashed_password = hash_password(user_data.password)
     user = User(
         username = user_data.username,
-        hashed_password = hashed_password
-    )
-
+        hashed_password = hashed_password)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -115,16 +120,21 @@ def login_user(
     ).first()
 
     if user is None:
-        return {"error" : "Invalid username or password"}
+        raise HTTPException(
+            status_code = 404,
+            detail = "User not found"
+        )
 
     if not verify_password(
         user_data.password,
         user.hashed_password
     ):
-        return {"error" : "Invalid username or password"}
+        raise HTTPException(
+            status_code = 401,
+            detail = "Invalid username or password"
+        )
 
     return{
-        "message" : "Sucessfully logged in",
         "user_id" : user.id,
         "username" : user.username
     }

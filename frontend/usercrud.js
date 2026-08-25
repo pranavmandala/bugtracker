@@ -4,11 +4,11 @@ const login = document.getElementById("login-button")
 const signup = document.getElementById("signup-button")
 
 signup.addEventListener("click", () => {
-    createUser()
+    createUser();
 });
 
 login.addEventListener("click", () => {
-    loginUser()
+    loginUser();
 })
 
 async function createUser(){
@@ -34,6 +34,8 @@ async function createUser(){
             document.getElementById("signup-message").innerHTML = "User successfully created, please login.";
             await new Promise(resolve => setTimeout(resolve, 1500));
             location.reload();
+        } else {
+            document.getElementById("signup-message").innerHTML = "A user with that username already exists, please choose another";
         }
     } catch(error) {
         console.log("Error: ", error);
@@ -56,7 +58,17 @@ async function loginUser(){
             },
             body : JSON.stringify(userobj)
         });
+        
         const result = await response.json()
+        
+        if (response.ok) {
+            document.getElementById("signup-message").innerHTML = "Login sucessful. Bringing you to homepage now";
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            window.location.replace("/");
+        } else {
+            document.getElementById("signup-message").innerHTML = "Invalid username or password";
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        }
     } catch (error) {
         console.log("Error: ", error);
     }
