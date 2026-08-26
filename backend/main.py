@@ -7,7 +7,7 @@ from backend.database import engine, Base, get_db
 from backend import models
 from backend.models import Bug, User
 from backend.schemas import UserCreate, UserLogin, BugCreate
-from backend.auth import hash_password, verify_password
+from backend.auth import hash_password, verify_password, create_token
 
 app = FastAPI()
 Base.metadata.create_all(bind = engine)
@@ -112,7 +112,7 @@ def register_user(
 
 @app.post("/api/auth/login")
 def login_user(
-    user_data : UserLogin,
+    user_data: UserLogin,
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(
@@ -121,8 +121,8 @@ def login_user(
 
     if user is None:
         raise HTTPException(
-            status_code = 404,
-            detail = "User not found"
+            status_code=404,
+            detail="User not found"
         )
 
     if not verify_password(
@@ -130,11 +130,13 @@ def login_user(
         user.hashed_password
     ):
         raise HTTPException(
-            status_code = 401,
-            detail = "Invalid username or password"
+            status_code=401,
+            detail="Invalid username or password"
         )
 
-    return{
-        "user_id" : user.id,
-        "username" : user.username
+    token = create_token(user.id)
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
     }

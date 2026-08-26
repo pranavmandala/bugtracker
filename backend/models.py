@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.sql import func
 
 from backend.database import Base
@@ -12,7 +12,8 @@ class Bug(Base):
     description = Column(Text)
     status = Column(String(50), default="open")
     priority = Column(String(50), default="medium")
-    created_at = Column(DateTime(timezone=True), server_default=func.now()) 
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    user_id = Column(String(50), ForeignKey("users.id"), nullable=False)
 
 class User(Base):
     __tablename__ = "users"
