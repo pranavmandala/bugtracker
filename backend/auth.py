@@ -2,8 +2,8 @@ from pwdlib import PasswordHash
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from models import User
-from database import get_db
+from backend.models import User
+from backend.database import get_db
 import os
 import jwt
 
