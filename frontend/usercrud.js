@@ -62,6 +62,7 @@ async function loginUser(){
         const result = await response.json()
         
         if (response.ok) {
+            localStorage.setItem("access_token", result.access_token)
             document.getElementById("signup-message").innerHTML = "Login sucessful. Bringing you to homepage now";
             await new Promise(resolve => setTimeout(resolve, 1500));
             window.location.replace("/");

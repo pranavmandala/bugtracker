@@ -13,7 +13,7 @@ class Bug(Base):
     status = Column(String(50), default="open")
     priority = Column(String(50), default="medium")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    user_id = Column(String(50), ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
 class User(Base):
     __tablename__ = "users"

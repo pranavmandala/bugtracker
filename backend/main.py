@@ -50,9 +50,13 @@ def get_bug(
         current_user: User = Depends(get_current_user)
         ):
             bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
-            if bug is None:
-                return {"error" : "Bug not found"}
-            return bug
+            if bug:
+                return bug
+            else:
+                raise HTTPException(
+                    status_code = 404,
+                    detail = "Bug not found"
+                )
 
 @app.delete("/api/bugs/{bug_id}")
 def delete_bug(
@@ -61,11 +65,15 @@ def delete_bug(
         current_user: User = Depends(get_current_user)
         ):
         bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
-        if bug is None:
-            return {"error": "Bug not found"}
-        db.delete(bug)
-        db.commit()
-        return {"message": "Bug deleted"}
+        if bug:
+            db.delete(bug)
+            db.commit()
+            return {"message": "Bug deleted"}
+        else:
+            raise HTTPException(
+                status_code = 404,
+                detail = "Bug not found"
+            )
 
 @app.put("/api/bugs/{bug_id}")
 def update_bug(
@@ -78,15 +86,21 @@ def update_bug(
     current_user: User = Depends(get_current_user)
     ):
     bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
-    if bug is None:
-        return {"error": "Bug not found"}
-    bug.title = title
-    bug.description = description
-    bug.status = status
-    bug.priority = priority
-    db.commit()
-    db.refresh(bug)
-    return bug
+    if bug:
+        bug.title = title
+        bug.description = description
+        bug.status = status
+        bug.priority = priority
+        db.commit()
+        db.refresh(bug)
+        return bug
+    else:
+        raise HTTPException(
+            status_code = 409,
+            detail = "Bug not found"
+        )     
+         
+
 
 @app.post("/api/bugs/register")
 def register_user(
