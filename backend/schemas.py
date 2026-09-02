@@ -5,6 +5,12 @@ class BugCreate(BaseModel):
     description: str
     priority : str
 
+class BugUpdate(BaseModel):
+    title: str
+    description: str
+    status: str
+    priority: str
+
 class UserCreate(BaseModel):
     username: str
     password: str

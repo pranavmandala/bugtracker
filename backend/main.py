@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from backend.database import engine, Base, get_db
 from backend import models
 from backend.models import Bug, User
-from backend.schemas import UserCreate, UserLogin, BugCreate
+from backend.schemas import UserCreate, UserLogin, BugCreate, BugUpdate
 from backend.auth import hash_password, verify_password, create_token, get_current_user
 
 app = FastAPI()
@@ -49,7 +49,7 @@ def get_bug(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)
         ):
-            bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
+            bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user.id).first()
             if bug:
                 return bug
             else:
@@ -64,7 +64,7 @@ def delete_bug(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)
         ):
-        bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
+        bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user.id).first()
         if bug:
             db.delete(bug)
             db.commit()
@@ -78,27 +78,24 @@ def delete_bug(
 @app.put("/api/bugs/{bug_id}")
 def update_bug(
     bug_id: int,
-    title: str,
-    description: str,
-    status: str,
-    priority: str,
+    bug_data: BugUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
-    ):
-    bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user).first()
+):
+    bug = db.query(Bug).filter(Bug.id == bug_id, Bug.user_id == current_user.id).first()
     if bug:
-        bug.title = title
-        bug.description = description
-        bug.status = status
-        bug.priority = priority
+        bug.title = bug_data.title
+        bug.description = bug_data.description
+        bug.status = bug_data.status
+        bug.priority = bug_data.priority
         db.commit()
         db.refresh(bug)
         return bug
     else:
         raise HTTPException(
-            status_code = 409,
-            detail = "Bug not found"
-        )     
+            status_code=404,
+            detail="Bug not found"
+        )  
          
 
 
