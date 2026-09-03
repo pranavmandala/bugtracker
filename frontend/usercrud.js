@@ -1,7 +1,7 @@
-const user = document.getElementById("username")
-const pass = document.getElementById("password")
-const login = document.getElementById("login-button")
-const signup = document.getElementById("signup-button")
+const user = document.getElementById("username");
+const pass = document.getElementById("password");
+const login = document.getElementById("login-button");
+const signup = document.getElementById("signup-button");
 
 signup.addEventListener("click", () => {
     createUser();
@@ -9,7 +9,7 @@ signup.addEventListener("click", () => {
 
 login.addEventListener("click", () => {
     loginUser();
-})
+});
 
 async function createUser(){
     const u = user.value;
@@ -53,7 +53,7 @@ async function loginUser(){
     const userobj = {
         username : u,
         password : p
-    }
+    };
     if (!u || !p){
         document.getElementById("signup-message").innerHTML = "Enter a valid username and password";
         return;
@@ -67,10 +67,10 @@ async function loginUser(){
             body : JSON.stringify(userobj)
         });
         
-        const result = await response.json()
+        const result = await response.json();
         
         if (response.ok) {
-            localStorage.setItem("access_token", result.access_token)
+            localStorage.setItem("access_token", result.access_token);
             document.getElementById("signup-message").innerHTML = "Login sucessful. Bringing you to homepage now";
             await new Promise(resolve => setTimeout(resolve, 1500));
             window.location.replace("/");

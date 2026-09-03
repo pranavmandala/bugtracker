@@ -3,7 +3,7 @@ const createButton = document.getElementById("create-button");
 const requestButton = document.getElementById("request-button");
 const deleteButton = document.getElementById("delete-button");
 const updateButton = document.getElementById("update-button");
-const token = localStorage.getItem("access_token")
+const logoutButton = document.getElementById("logout-button");
 
 createButton.addEventListener("click", () =>{
     postBugData();
@@ -11,7 +11,7 @@ createButton.addEventListener("click", () =>{
 
 requestButton.addEventListener("click", () => {
     getBugData();
-})
+});
 
 deleteButton.addEventListener("click", () => {
     deleteBugData();
@@ -19,17 +19,23 @@ deleteButton.addEventListener("click", () => {
 
 updateButton.addEventListener("click", () => {
     updateBugData();
-})
+});
+
+logoutButton.addEventListener("click", () => {
+    logoutUser();
+});
 
 async function postBugData(){
     const bugTitle = document.getElementById("bug-name").value;
     const bugDescription = document.getElementById("bug-description").value;
     const prior = prioritySelect.value;
     const url = "/api/bugs";
+    const token = localStorage.getItem("access_token");
+
     if (!bugTitle.trim() || !bugDescription.trim()){
         document.getElementById("create-message").innerHTML = "Enter valid values for bug data";
         setTimeout(() => {
-            document.getElementById("create-message").innerHTML = ""
+            document.getElementById("create-message").innerHTML = "";
         }, 3000);
         return;
     }
@@ -50,7 +56,7 @@ async function postBugData(){
         });
         const result = await response.json();
         if (response.ok) {
-            document.getElementById("create-message"),innerHTML = "Bug successfully created";
+            document.getElementById("create-message").innerHTML = "Bug successfully created";
         } else {
             document.getElementById("create-message").innerHTML = "Bug was not created";
 
@@ -66,6 +72,7 @@ async function postBugData(){
 async function getBugData(){
     const bugID = document.getElementById("bug-id-get").value;
     const url = `/api/bugs/${bugID}`;
+    const token = localStorage.getItem("access_token");
     if(!bugID || isNaN(bugID)) {
         document.getElementById("get-message").innerHTML = "Enter a valid bug ID";
         setTimeout(() => {
@@ -101,11 +108,12 @@ async function getBugData(){
 
 async function deleteBugData(){
     const bugID = document.getElementById("bug-id-delete").value;
-    const url = `/api/bugs/${bugID}`
+    const url = `/api/bugs/${bugID}`;
+    const token = localStorage.getItem("access_token");
     if(!bugID || isNaN(bugID)){
         document.getElementById("delete-message").innerHTML = "Enter a valid bug ID";
         setTimeout(() => {
-            document.getElementById("delete-message").innerHTML = ""
+            document.getElementById("delete-message").innerHTML = "";
         }, 3000);
         return;
     }
@@ -126,7 +134,7 @@ async function deleteBugData(){
             document.getElementById("delete-message").innerHTML = "";
         }, 3000);
     } catch (error) {
-        console.log("Error : ", error)
+        console.log("Error : ", error);
     }
 }
 
@@ -137,10 +145,11 @@ async function updateBugData(){
     const bugStatus = document.getElementById("bug-status-update").value;
     const prior = document.getElementById("priority-select-update").value;
     const url = `/api/bugs/${bugID}`;
+    const token = localStorage.getItem("access_token");
     if(!bugID || isNaN(bugID) || !bugTitle.trim() || !bugDescription.trim() || !bugStatus.trim()){
         document.getElementById("update-message").innerHTML = "Enter a valid values for updating bug";
         setTimeout(() => {
-            document.getElementById("update-message").innerHTML = ""
+            document.getElementById("update-message").innerHTML = "";
         }, 3000);
         return;
     }
@@ -149,7 +158,7 @@ async function updateBugData(){
         description : bugDescription,
         status : bugStatus,
         priority : prior
-    }
+    };
     try {
         const response = await fetch(url, {
             method: "PUT",
@@ -169,6 +178,11 @@ async function updateBugData(){
             document.getElementById("update-message").innerHTML = "";
         }, 3000);
     } catch (error) {
-        console.log("Error : ", error)
+        console.log("Error : ", error);
     }
+}
+
+function logoutUser() {
+    localStorage.removeItem("access-token");
+    window.location.replace("/");
 }
