@@ -40,7 +40,7 @@ def get_bugs(
         db: Session = Depends(get_db),
         current_user: User = Depends(get_current_user)
         ):
-        bugs = db.query(Bug).filter(Bug.user_id == current_user).all()
+        bugs = db.query(Bug).filter(Bug.user_id == current_user.id).all()
         return bugs
 
 @app.get("/api/bugs/{bug_id}")

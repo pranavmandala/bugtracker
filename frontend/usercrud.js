@@ -15,6 +15,10 @@ async function createUser(){
     const u = user.value;
     const p = pass.value;
     const url = "/api/bugs/register";
+    if (!u || !p){
+        document.getElementById("signup-message").innerHTML = "Enter a valid username and password";
+        return;
+    }
     const userobj = {
         username : u,
         password : p
@@ -49,6 +53,10 @@ async function loginUser(){
     const userobj = {
         username : u,
         password : p
+    }
+    if (!u || !p){
+        document.getElementById("signup-message").innerHTML = "Enter a valid username and password";
+        return;
     }
     try{
         const response = await fetch(url, {
