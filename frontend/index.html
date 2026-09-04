@@ -1,58 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/styles.css">
         <title>Bug Tracker</title>
     </head>
     <body>
         <header class="header-buttons">
-            <a href="/static/accountpage.html"><button>Login</button></a>
-            <a href="/static/accountpage.html"><button>Sign Up</button></a>
-            <button id="logout-button">Logout</button>
+            <h1 class="app-title">Bug Tracker</h1>
+            <div class="auth-actions">
+                <div id="guest-buttons" class="auth-actions-group">
+                    <a href="/static/accountpage.html"><button class="btn btn-outline">Login</button></a>
+                    <a href="/static/accountpage.html"><button class="btn btn-primary">Sign Up</button></a>
+                </div>
+                <button id="logout-button" class="btn btn-outline" style="display:none;">Logout</button>
+            </div>
         </header>
-        <p>
-            Bug Tracker
-        </p>
-        <div>
-            <input type="text" id="bug-id-get" placeholder="Enter bug id">
-            <button id="request-button">Get Bug</button>
-            <p id="get-message"></p>
-        </div>
-        <p>
 
-        </p>
-        <div>
-            <input type="text" id="bug-id-delete" placeholder="Enter bug id">
-            <button id="delete-button">Delete Bug</button>
-            <p id="delete-message"></p>
-        </div>
-        <div>
-            <input type="text" id="bug-name" placeholder="Enter bug name">
-            <input type="text" id="bug-description" placeholder="Enter bug description">
-            <select id="priority-select">
-                <option value="low">low</option>
-                <option value="medium">medium</option>
-                <option value="high">high</option>
-            </select>
-            <button id="create-button">Create Bug</button>
-            <p id="create-message"></p>
-        </div>
-        <div>
-            <input type="text" id="bug-id-update" placeholder="Enter bug id">
-            <input type="text" id="bug-name-update" placeholder = "Enter updated name">
-            <input type="text" id="bug-description-update" placeholder = "Enter updated description">
-            <input type="text" id="bug-status-update" placeholder="Enter current status">
-            <select id="priority-select-update">
-                    <option value="low">low</option>
-                    <option value="medium">medium</option>
-                    <option value="high">high</option>
-            </select>
-            <button id="update-button">Update Bug</button>
-            <p id="update-message"></p>
-        </div>
-        <div id="bug-list">
+        <main class="container">
+            <section class="card">
+                <h2>Get a bug</h2>
+                <div class="field-row">
+                    <input type="text" id="bug-id-get" placeholder="Enter bug id">
+                    <button id="request-button" class="btn btn-primary">Get Bug</button>
+                </div>
+                <p id="get-message"></p>
+            </section>
 
-        </div>
+            <section class="card">
+                <h2>Delete a bug</h2>
+                <div class="field-row">
+                    <input type="text" id="bug-id-delete" placeholder="Enter bug id">
+                    <button id="delete-button" class="btn btn-danger">Delete Bug</button>
+                </div>
+                <p id="delete-message"></p>
+            </section>
+
+            <section class="card">
+                <h2>Create a bug</h2>
+                <div class="field-row">
+                    <input type="text" id="bug-name" placeholder="Enter bug name">
+                    <input type="text" id="bug-description" placeholder="Enter bug description">
+                    <select id="priority-select">
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+                        <option value="high">high</option>
+                    </select>
+                    <button id="create-button" class="btn btn-primary">Create Bug</button>
+                </div>
+                <p id="create-message"></p>
+            </section>
+
+            <section class="card">
+                <h2>Update a bug</h2>
+                <div class="field-row">
+                    <input type="text" id="bug-id-update" placeholder="Enter bug id">
+                    <input type="text" id="bug-name-update" placeholder="Enter updated name">
+                    <input type="text" id="bug-description-update" placeholder="Enter updated description">
+                    <input type="text" id="bug-status-update" placeholder="Enter current status">
+                    <select id="priority-select-update">
+                        <option value="low">low</option>
+                        <option value="medium">medium</option>
+                        <option value="high">high</option>
+                    </select>
+                    <button id="update-button" class="btn btn-primary">Update Bug</button>
+                </div>
+                <p id="update-message"></p>
+            </section>
+
+            <section id="bug-list-section" class="card" style="display:none;">
+                <h2>Your bugs</h2>
+                <div id="bug-list"></div>
+            </section>
+        </main>
+
         <script type="module" src="/static/bugcrud.js"></script>
     </body>
 </html>

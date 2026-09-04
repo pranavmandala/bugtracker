@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/styles.css">
+        <title>Account - Bug Tracker</title>
     </head>
     <body>
-        <div class="">
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
+        <div class="account-wrapper">
+            <div class="account-card">
+                <h1 class="account-title">Bug Tracker</h1>
+                <p class="account-subtitle">Log in or create an account to track your bugs.</p>
+                <div class="field-column">
+                    <input type="text" id="username" placeholder="Username">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <div class="account-actions">
+                    <button id="login-button" class="btn btn-primary">Log in</button>
+                    <button id="signup-button" class="btn btn-outline">Sign up</button>
+                </div>
+                <p id="signup-message"></p>
+            </div>
         </div>
-        <div>
-            <button id="login-button">Log in</button>
-            <button id="signup-button">Sign up</button>
-        </div>
-        <p id="signup-message"></p>
+        <script src="/static/usercrud.js"></script>
     </body>
-    <script src="/static/usercrud.js"></script>
 </html>
